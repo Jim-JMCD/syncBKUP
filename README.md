@@ -8,8 +8,9 @@
 syncBKUP -s <source> -d <destination> -m <no-mount-point-check>
 ~~~
 #### Options
-__*-s*__ Data source to be backed up can be either a single directory or a file listing directories to be backed up. 
 
--d The destination directory of the backup data, the backup repository.
+**-s** Data source to be backed up can be either a single directory or a file listing directories to be backed up. 
 
--m When used it must be accompanied by "no-mount-point-check".   
+**-d** The destination directory of the backup data, the backup repository.
+
+**-m** When used it must be accompanied by "no-mount-point-check".   
