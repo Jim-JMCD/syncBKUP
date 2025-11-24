@@ -13,7 +13,7 @@ syncBKUP -s <source> -d <destination> -m <no-mount-point-check>
 
 **-d** The destination directory of the backup data, the backup repository.
 
-**-m** Optional, when used it must be accompanied by "**no-mount-point-check**".   
+**-m** Optional, when used it must be accompanied by "**no-mount-check**".   
 
 **Input notes and restrictions**
 * All directory paths must be <ins>full paths</ins>.
@@ -32,3 +32,20 @@ A source file provides a list of directtories to back up. The format requirments
    
 **Mount Point Check**
   
+A safety check to prevent the potential of the root and other fiesystems filling up. It also pays to check using **df -Th** command
+
+Traditionally */mnt* is where temporary external devices and network shares are attached, with each device having its own directory.  To attach (aka __mount__) a device a pre-existing directory (aka __mount point__) must exist it usually has flexible write permissons. Any utlitiy that copies data to the mount point without a device attached will run as normal and <ins>could fill up the root filesystem</ins> or what ever filesystem the mount point is on. When the mount point is used by an external device, the directories and files that were previosly written to it remain hidden and using up space. 
+
+* The mount point check covers the first three directories of a backup destination path, example **/mnt/USB/BKUP_2TB/syncBKUP/2025** the directories **/mnt**, **/mnt/USB** and **/mnt/USB/BKUP_2TB** will checked. If none of those directories contian a mounted device the check will fail and processing will not proceed.
+* Symbolic links to mount points are often used to create a convenient refence to storage devices. If the symbolic link is straight forward, it will pass the mount point check if a storage device is attached to the mount point that it references. With symbolic links there are no guaratees, it pays to check.
+* Special case: In a MSYS2 environment the mount point check is disabled.
+   
+_Disabling Mount Poiunt Check_ : The option -m must be accompanied with _no-mount-check_ : **-m no_mount_check** 
+
+
+
+
+
+
+
+
