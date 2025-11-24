@@ -19,16 +19,17 @@ syncBKUP -s <source> -d <destination> -m <no-mount-point-check>
 * All directory paths must be <ins>full paths</ins>.
 * <ins>All symbolic links</ins> are ignored and will not be processed.
 * Single directory input with spaces require single quotes **'/mnt/c/Users/ted/My Documents'**
-* Training slahes on director names are ignored, eaxmple **/hame/ada/** will be preocessed as **/home/ada**    
+* Trailing slahes on directory names are ignored, eaxmple: **/home/ada/** will be preocessed as **/home/ada**    
 
 **Source File Format**
 
 A source file provides a list of directtories to back up. The format requirments are 
 * Any line that starts with *'#'* is ignored.
-* Any line that starts with *'.'* (fullstop) terminates backup processing. Any directories listed after this line will not be processd.
-* All blanks lines are permitted.
-* Any line that only contains a single vaild non-empty directory will be processed. Any additional directories and characters will result in the line being ignored
-* Leading spaces on valid non-empty directory entries are permitted.
+* Any line that starts with *'.'* (fullstop) terminates backup processing. Any directories listed after that line will not be processd.
+* Blanks lines are permitted.
+* Leading spaces on line entries permitted.
+* Any line that only contains a single vaild non-empty directory will be processed, any additional directories and characters will result in the line being ignored
+
    
 
   
