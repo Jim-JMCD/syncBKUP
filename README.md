@@ -9,7 +9,7 @@ syncBKUP -s <source> -d <destination> -m <no-mount-point-check>
 ~~~
 #### Options
 
-**-s** Data source to be backed up can be either a single directory on the cammnd line or a file listing directories to be backed up. 
+**-s** Data source to be backed up can be either a single directory on the command line or a file listing directories to be backed up. 
 
 **-d** The destination directory of the backup data, the backup repository.
 
@@ -28,8 +28,7 @@ A source file provides a list of directtories to back up. The format requirments
 * Any line that starts with *'.'* (fullstop) terminates backup processing. Any directories listed after that line will not be processd.
 * Blanks lines are permitted.
 * Leading spaces on line entries permitted.
-* Any line that only contains a single vaild non-empty directory will be processed, any additional directories and characters will result in the line being ignored
-
+* Only lines that only contain a single valid non-empty directory will be processed, <ins>any additional material on a line will cause the line not to be processed</ins>. 
    
 
   
