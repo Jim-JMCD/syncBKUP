@@ -30,5 +30,5 @@ A source file provides a list of directtories to back up. The format requirments
 * Leading spaces on line entries permitted.
 * Only lines that only contain a single valid non-empty directory will be processed, <ins>any additional material on a line will cause the line not to be processed</ins>. 
    
-
+**Mount Point Check**
   
