@@ -52,11 +52,24 @@ Directory strucuture of the backp repository, the levels are:
 
 #### Identifying what is backed up 
 Level 3, the directory name uniquely identifies each directory backed up by created a direcotry named using the directory path of of the source.  The slashes of the source directory are replaced with underscores "_".
+
+All backups can be located in **../Computer name/Modified_source_directory_name/..* 
 ~~~
 Computer name = star03
-Source        = -s /home/ada/music/2010s/dubstep
+Data source   = -s /home/ada/music/2010s/dubstep
 Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
+Location /mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada_music_2010s_dubstep/dubstep/
 ~~~
+In backup repository the backup can be located by **star03/home_ada_music_2010s_dubstep/dubstep/**
+~~~
+Computer name = fred02
+Data source   = -s '/mnt/c/Users/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
+Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
+Location '/mnt/USB/BKUP_2TB/syncBKUP/2025/fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal'
+~~~
+Backupo repository location  **fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal**
+
+Maximum characters permitted in a directory path obtained from the command **getconf PATH_MAX /**, usually 4096 charcaters.
 
    
    
