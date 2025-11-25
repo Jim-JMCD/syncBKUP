@@ -51,7 +51,7 @@ Directory strucuture of the backp repository, the levels are:
 * Level 4 - The directory level named after the parent of the data. Example this directory will be named **music** when given **-s /home/ada/music** to backup. All directories below this level contain the backup data.
 
 #### Identifying what is backed up 
-Level 3, the directory name uniquely identifies each directory backed up by created a direcotry named using the directory path of of the source.  The slashes of the source directory are replaced with underscores "_".
+Level 3, the directory name uniquely identifies each directory backed up by created a direcotry named using the directory path of of the source.  The "/" slashes and spaces of the source directory are replaced with underscores "_".
 
 All backups can be located in **../Computer name/Modified_source_directory_name/..* 
 ~~~
@@ -67,9 +67,15 @@ Data source   = -s '/mnt/c/Users/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
 Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
 Location '/mnt/USB/BKUP_2TB/syncBKUP/2025/fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal'
 ~~~
-Backupo repository location  **fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal**
+Backup repository location  **fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal**
 
-Maximum characters permitted in a directory path obtained from the command **getconf PATH_MAX /**, usually 4096 charcaters.
+Note: Directories names with spaces have the spces converted to underscores. 
+~~~
+'/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
+Is converted to
+ted_Music_1990_to_1997_Shoegaze_and_Nu_Metal
+~~~
+Maximum characters permitted in a directory path obtained from the command _getconf PATH_MAX /_ usually 4096 charcaters.
 
    
    
