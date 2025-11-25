@@ -18,7 +18,7 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 **Input notes and restrictions**
 * All directory paths must be <ins>full paths</ins>.
 * <ins>All symbolic links</ins> are ignored and will not be processed.
-* Single directory input with spaces require single quotes **'/mnt/c/Users/ted/My Documents'**
+* Single directory input with spaces requires single quotes **'/mnt/c/Users/ted/My Documents'**
 * Trailing slashes on directory names are ignored, example: **/home/ada/** will be processed as **/home/ada**
 * Only directories will be synchronised, individual files cannot be used as a source.    
 
@@ -26,7 +26,7 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 
 A source file provides a list of directories to back up. The format requirements are 
 * Any line that starts with *'#'* is ignored.
-* Any line that starts with *'.'* (full stop) terminates backup processing. Any directories listed after that line will not be processed.
+* Any line that starts with *'.'* (full stop) terminates all backup processing. Any directories listed after that line will not be processed.
 * Blanks lines are permitted.
 * Leading spaces on line entries permitted.
 * Only lines that only contain a single valid non-empty directory will be processed, <ins>any additional material on a line will cause the line not to be processed</ins>. 
@@ -85,6 +85,18 @@ Maximum characters permitted in a directory path obtained from the command **_ge
 
 ### Versions
 
+~~~
+Computer name = star03
+Data source   = -s /home/ada/
+Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
+
+/mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada/ada
+                                               /ada-version-2025-Oct-26-2002-16
+                                               /ada-version-2025-Nov-02-2000-10
+                                               /ada-version-2025-Nov-09-2001-36
+                                               /ada-version-2025-Nov-23-2001-05
+                                               /log
+~~~
 
 ### Logs
 Individual logs are produced for each directory backup. Each synchronised backup log appends to the log file. 
