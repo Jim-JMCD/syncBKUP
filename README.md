@@ -60,22 +60,30 @@ Data source   = -s /home/ada/music/2010s/dubstep
 Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
 Location /mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada_music_2010s_dubstep/dubstep/
 ~~~
-In backup repository the backup can be located by **star03/home_ada_music_2010s_dubstep/dubstep/**
+* The synchronised data backup repository is
+  * **.../star03/home_ada_music_2010s_dubstep/dubstep/**
+* Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../dubstep/**
+* Version directories are located in the same as the logs and **.../dubstep/**
 ~~~
 Computer name = fred02
 Data source   = -s '/mnt/c/Users/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
 Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
-Location '/mnt/USB/BKUP_2TB/syncBKUP/2025/fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal'
+Location '/mnt/USB/BKUP_2TB/syncBKUP/2025/fred02/mnt_c_Users_ted_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal'
 ~~~
-Backup repository location  **fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal**
+* The synchronised data backup repository is
+  * **.../fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal/**
 
-Note: Directories names with spaces have the spces converted to underscores. 
+* Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../Shoegaze and Nu Metal/**
+* Version directories are located in the same as the logs and **.../Shoegaze and Nu Metal/**
+* Note: Directories names with spaces have the spaces converted to underscores. 
 ~~~
 '/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
 Is converted to
 ted_Music_1990_to_1997_Shoegaze_and_Nu_Metal
 ~~~
 Maximum characters permitted in a directory path obtained from the command _getconf PATH_MAX /_ usually 4096 charcaters.
+
+### LOGs
 
    
    
