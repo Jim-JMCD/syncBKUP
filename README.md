@@ -52,7 +52,7 @@ Directory structure of the backup repository, the levels are:
 * Level 4 - The directory level named after the parent of the data. Example this directory will be named **music** when given **-s /home/ada/music** to backup. All directories below this level contain the backup data.
 
 #### Identifying what is backed up 
-Level 3, the directory name uniquely identifies each directory backed up by created a direcotry named using the directory path of of the source.  The "/" slashes and spaces of the source directory are replaced with underscores "_".
+Level 3, the directory name uniquely identifies each directory backed up by created a direcotry named using the directory path of of the source.  The "/" slashes of the source directory path are replaced with underscores "_", spaces in directory names are preserved.
 
 All backups can be located in **../Computer name/Modified_source_directory_name/..* 
 ~~~
@@ -71,9 +71,9 @@ Data source   = -s '/mnt/c/Users/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
 Destination   = -d /mnt/e/syncBKUP/
 
 Location of synchronised backup :
-'/mnt/e/syncBKUP/fred02/mnt_c_Users_ted_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal'
+'/mnt/e/syncBKUP/fred02/mnt_c_Users_ted_Music_900 to 1997_Shoegaze and Nu Metal/Shoegaze and Nu Metal'
 ~~~
-* Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../Shoegaze and Nu Metal/**
+* Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../Shoegaze and Nu Metal/*
 * Version directories are located in the same as the logs and **.../Shoegaze and Nu Metal/**
 * Note: Directories names with spaces have the spaces converted to underscores. 
 ~~~
