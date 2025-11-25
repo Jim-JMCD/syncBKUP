@@ -40,8 +40,30 @@ Traditionally */mnt* is where temporary external devices and network shares are 
 * Symbolic links to mount points are often used to create a convenient refence to storage devices. If the symbolic link is straight forward, it will pass the mount point check if a storage device is attached to the mount point that it references. With symbolic links there are no guaratees, it pays to check.
 * Special case: In a MSYS2 environment the mount point check is disabled.
    
-_Disabling Mount Poiunt Check_ : The option -m must be accompanied with _no-mount-check_ : **-m no_mount_check** 
+_Disabling Mount Point Check_ : The option -m must be accompanied with _no-mount-check_ : **-m no_mount_check**
 
+### Backup Destination 
+
+Directory strucuture of the backp repository, the levels are:
+* Level 1 - Top level - an existing directory given to syncBKUP as **-d \<destination\>**
+* Level 2 - The computer name where the script was run. This permits multiple computers tp write to the same storage area.
+* Level 3 - The directory that contains and uniquely each directory that is backed up i.e. given to syncBKUP as **-s <source>**. This directory contains the version directories and the log for each backup.  
+* Level 4 - The directory level named after the parent of the data. Example this directory will be named **music** when given **-s /home/ada/music** to backup. All directories below this level contain the backup data.
+
+#### Identifying what is backed up 
+Level 3, the directory name uniquely identifies each directory backed up by created a direcotry named using the directory path of of the source.  The slashes of the source directory are replaced with underscores "_".
+~~~
+Computer name = star03
+Source        = -s /home/ada/music/2010s/dubstep
+Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
+~~~
+
+   
+   
+
+
+
+   
 
 
 
