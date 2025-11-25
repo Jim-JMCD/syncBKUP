@@ -105,7 +105,13 @@ syncBKUP -s <source> -d <destination> | tee log_file
    * --backup --backup-dir These create the version directories
    * --no-links Do not follow or use symbolic links.
    * --delete When source is synchronised with the repository anything delted on source is mirrored in the repository.
-   * --log-file This appends the output created by rsync and the -v option to a designated log file.  
+   * --log-file This appends the output created by rsync and the -v option to a designated log file.
+
+Compression not used becasue it only of benefits IP network synchronisations. If compression is enabled for non-networked transfers synchronisations have to do a lot of unnecessary processing of compression.
+
+Rsync will not compress files that are already compressed (most multimedia) and small files.  
+     
+     
 
 
 
