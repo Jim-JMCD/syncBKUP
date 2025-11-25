@@ -1,7 +1,7 @@
 # UNDER CONTRUCTION 
 ## syncBKUP - Synchronised data backups with unlimited versioning. 
 
-#### _SyncBKUP_ a Bash script to that synchronises data directories and files to a backup repository. Only the last backup is stored in the repository as a complete copy of the original.  All changes to a directory or file between backups are kept in individual version folders. The history of changes recorded version folders no limits.
+#### _SyncBKUP_ a Bash script to that synchronises data directories and files to a backup repository. Only the last backup is stored in the repository as a complete copy of the original.  All changes to a directory or file between backups are kept in individual version folders. The history of changes recorded version folders no limits.  This script is based on capbilities of ***rsync***.
 
 ### Usage
 ~~~
@@ -58,21 +58,20 @@ All backups can be located in **../Computer name/Modified_source_directory_name/
 Computer name = star03
 Data source   = -s /home/ada/music/2010s/dubstep
 Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
-Location /mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada_music_2010s_dubstep/dubstep/
+
+Location of synchronised backup:
+/mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada_music_2010s_dubstep/dubstep/
 ~~~
-* The synchronised data backup repository is
-  * **.../star03/home_ada_music_2010s_dubstep/dubstep/**
 * Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../dubstep/**
 * Version directories are located in the same as the logs and **.../dubstep/**
 ~~~
 Computer name = fred02
 Data source   = -s '/mnt/c/Users/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
-Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
-Location '/mnt/USB/BKUP_2TB/syncBKUP/2025/fred02/mnt_c_Users_ted_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal'
-~~~
-* The synchronised data backup repository is
-  * **.../fred02/mnt_c_Users_ted_My_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal/**
+Destination   = -d /mnt/e/syncBKUP/
 
+Location of synchronised backup :
+'/mnt/e/syncBKUP/fred02/mnt_c_Users_ted_Music_1900_to_1997_Shoegaze_and_Nu_Metal/Shoegaze and Nu Metal'
+~~~
 * Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../Shoegaze and Nu Metal/**
 * Version directories are located in the same as the logs and **.../Shoegaze and Nu Metal/**
 * Note: Directories names with spaces have the spaces converted to underscores. 
@@ -81,9 +80,34 @@ Location '/mnt/USB/BKUP_2TB/syncBKUP/2025/fred02/mnt_c_Users_ted_Music_1900_to_1
 Is converted to
 ted_Music_1990_to_1997_Shoegaze_and_Nu_Metal
 ~~~
-Maximum characters permitted in a directory path obtained from the command _getconf PATH_MAX /_ usually 4096 charcaters.
+Maximum characters permitted in a directory path obtained from the command **_getconf PATH_MAX /_** (usually 4096 charcaters).
 
-### LOGs
+### Versions
+
+
+### Logs
+Individual logs are produced for each directory backup. Each synchronised backup log appends to the log file. 
+If the log file is deleted a new log file will be automatically created.
+Logs are only created if a synchronisation has been initiated. 
+
+Running the script produces considerable output informing the user of failure, succcesses of all synchronised backups. The user can record this information by directing to a log file.
+~~~
+syncBKUP -s <source> -d <destination> > log_file
+OR
+syncBKUP -s <source> -d <destination> | tee log_file
+~~~
+### rsync options used
+   * -a Archive mode
+   * -A Preserve ACLs
+   * -X Preserve extended attributes
+   * -h Human readable, for the logs
+   * -v Verbosity. Set to lowest verbisity used in indidual logs.
+   * --backup --backup-dir These create the version directories
+   * --no-links Do not follow or use symbolic links.
+   * --delete When source is synchronised with the repository anything delted on source is mirrored in the repository.
+   * --log-file This appends the output created by rsync and the -v option to a designated log file.  
+
+
 
    
    
