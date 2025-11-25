@@ -1,7 +1,7 @@
 # UNDER CONTRUCTION 
 ## syncBKUP - Synchronised data backups with unlimited versioning. 
 
-#### _SyncBKUP_ a Bash script to that synchronises data directories and files to a backup repository. Only the last backup is stored in the repository as a complete synchronised copy of the original.  All changes and deletion to any directory or file between backups are kept in individual version folders. A history of data synchronisations are retained in individual version directories. There are no limits on how long or how much historical data is kept.  This script is based on capabilities of ***rsync***.
+#### _SyncBKUP_, a Bash script to that synchronises data directories and files to a backup repository. Only the last backup is stored in the repository. All changes and deletion to any directory or file between backups are kept in individual version folders. A history of data synchronisations are retained in individual version directories. There are no limits on how long or how much historical data is kept.  This script is based on capabilities of ***rsync***.
 
 ### Usage
 ~~~
@@ -84,18 +84,28 @@ ted_Music_1990_to_1997_Shoegaze_and_Nu_Metal
 Maximum characters permitted in a directory path obtained from the command **_getconf PATH_MAX /_** (usually 4096 characters).
 
 ### Versions
+For each directory backup, all deletions and modifications of files and directories will be recorded individual version directories.
+If there are no changes to a directory between backups a version directory is not created.
+When a file or directory is moved to the version directory its directory location within the original backup is also created. 
+If a source directory is renamed the entire original directroy will be copied to the version file.
+A single change file change in will trigger the creation of a version directory and the previous backup copy will be moved the version file and any directories where it was located will also be created. 
 
+Example 
 ~~~
-Computer name = star03
-Data source   = -s /home/ada/
-Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
+Computer name    = star03
+Data source      = -s /home/ada/
+Destination      = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
+Full backup path = /mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada/ada/
 
-/mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada/ada
-                                               /ada-version-2025-Oct-26-2002-16
-                                               /ada-version-2025-Nov-02-2000-10
-                                               /ada-version-2025-Nov-09-2001-36
-                                               /ada-version-2025-Nov-23-2001-05
-                                               /log
+Directories created by syncBKUP for the backup of star03:/home/ada/
+.../star03/home_ada
+              |__ /ada        <------------------------- Contains the synchronised full backup of directory /home/ada 
+              |__ /ada-version-2025-Nov-23-1902-16       
+              |__ /ada-version-2025-Nov-09-1900-10       Version directories containing all the modificatons and deketions  
+              |__ /ada-version-2025-Nov-02-1901-36       from each backup run (every Sunday at about 7PM)
+              |__ /ada-version-2025-Oct-26-1900-05
+              |__ /log        <------------------------  The log file for every /home/ada backup, all backup log data
+                                                         is appended to this file
 ~~~
 
 ### Logs
