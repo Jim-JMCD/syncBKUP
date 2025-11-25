@@ -9,7 +9,7 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 ~~~
 #### Options
 
-**-s** Data source to be backed up can be either a single directory on the command line or a file listing directories to be backed up. 
+**-s** A directory or file name required as a data source of the backup. 
 
 **-d** The destination directory of the backup data, the backup repository.
 
@@ -19,7 +19,8 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 * All directory paths must be <ins>full paths</ins>.
 * <ins>All symbolic links</ins> are ignored and will not be processed.
 * Single directory input with spaces require single quotes **'/mnt/c/Users/ted/My Documents'**
-* Trailing slashes on directory names are ignored, example: **/home/ada/** will be processed as **/home/ada**    
+* Trailing slashes on directory names are ignored, example: **/home/ada/** will be processed as **/home/ada**
+* Only directories will be synchronised, individual files cannot be used as a source.    
 
 **Source File Format**
 
