@@ -97,15 +97,15 @@ OR
 syncBKUP -s <source> -d <destination> | tee log_file
 ~~~
 ### rsync options used
-   * -a Archive mode
-   * -A Preserve ACLs
-   * -X Preserve extended attributes
-   * -h Human readable, for the logs
-   * -v Verbosity. Set to lowest verbisity used in indidual logs.
-   * --backup --backup-dir These create the version directories
-   * --no-links Do not follow or use symbolic links.
-   * --delete When source is synchronised with the repository anything delted on source is mirrored in the repository.
-   * --log-file This appends the output created by rsync and the -v option to a designated log file.
+   * **-a** Archive mode
+   * **-A** Preserve ACLs
+   * **-X** Preserve extended attributes
+   * **-h** Human readable, for the logs
+   * **-v** Verbosity. Set to lowest verbisity used in individual logs.
+   * **--backup --backup-dir** These create the version directories
+   * **--no-links** Do not follow or use symbolic links.
+   * **--delete** At synchrinisation, anything deleted on source is mirrored in the repository. Deleted files and directories saved in the version directories
+   * **--log-file** This appends the output created by rsync and the -v option to a designated log file.
 
 Compression not used becasue it only of benefits IP network synchronisations. If compression is enabled for non-networked transfers synchronisations have to do a lot of unnecessary processing of compression.
 
