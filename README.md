@@ -1,11 +1,11 @@
 # UNDER CONTRUCTION 
 ## syncBKUP - Synchronised data backups with unlimited versioning. 
 
-#### _SyncBKUP_ a Bash script to that synchronises data directories and files to a backup repository. Only the last backup is stored in the repository as a complete synchronised copy of the original.  All changes and deletion to any directory or file between backups are kept in individual version folders. The history of data is retained version folders. There are no limits on how long historical data deltas are kept.  This script is based on capabilities of ***rsync***.
+#### _SyncBKUP_ a Bash script to that synchronises data directories and files to a backup repository. Only the last backup is stored in the repository as a complete synchronised copy of the original.  All changes and deletion to any directory or file between backups are kept in individual version folders. A history of data synchronisations are retained in individual version directories. There are no limits on how long or how much historical data is kept.  This script is based on capabilities of ***rsync***.
 
 ### Usage
 ~~~
-syncBKUP -s <source> -d <destination> -m <no-mount-point-check>
+syncBKUP -s <source> -d <destination> -m <no-mount-check>
 ~~~
 #### Options
 
