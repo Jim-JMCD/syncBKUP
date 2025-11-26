@@ -67,23 +67,22 @@ Computer name = star03
 Data source   = -s /home/ada/music/2010s/dubstep
 Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
 
-Location of the backup on the computer that is running syncBKUP:
-/mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada_music_2010s_dubstep/dubstep/
+Location of the backup:
+.../syncBKUP/2025/star03/home_ada_music_2010s_dubstep/dubstep/<backup data>
 ~~~
 * Backups identifiers : **../star03/home_ada_music_2010s_dubstep/..**
-* Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../dubstep/**
-* Version directories are located in the same as the logs and **.../dubstep/**
+* THe log and version directories for backups are located in **.../dubstep/**
+
 ~~~
 Computer name = fred02
 Data source   = -s '/mnt/c/Users/ted/Music/1990 - 97/Shoegaze and Nu Metal'
 Destination   = -d /mnt/e/syncBKUP/
 
-Location of the backup on the computer that is running syncBKUP:
-'/mnt/e/syncBKUP/fred02/mnt_c_Users_ted_Music_1900 - 97_Shoegaze & Nu Metal/Shoegaze & Nu Metal'
+Location of the backup:
+'.../syncBKUP/fred02/mnt_c_Users_ted_Music_1900 - 97_Shoegaze & Nu Metal/Shoegaze & Nu Metal/<backup data>'
 ~~~
 * Backups identifiers : **../fred02/mnt_c_Users_ted_Music_1900 - 97_Shoegaze & Nu Metal/..**
-* Logs for '/mnt/c/Users/ted/Music/1990 - 97/Shoegaze and Nu Metal' backup are located in the same directory as **.../Shoegaze and Nu Metal/**
-* Version directories are located in the same the logs and backup.
+* Logs and version directories are located in **.../Shoegaze and Nu Metal/**
 
 ### Versions
 For each directory backup, all deletions and modifications of files and directories will be recorded individual version directories.
