@@ -158,18 +158,18 @@ Microsoft recommends that you do not run WSL2 on computers that run virtual hype
 Compression not used because it only of benefits IP network synchronisations. 
 Rsync will not compress files that are already compressed (most multimedia) and small files.  
 
-****Limitations**** - Directory Path Length 
+****Limitations**** - maximum Directory Path Length 
 
 <ins>Linux</ins>
 
 * Maximum characters permitted in a directory path obtained from the command **_getconf PATH_MAX /_** (usually 4096 characters).
-* Changing the Length directory path length is not trivial, consult the internet for this one. 
+* Changing the maximum Directory Path Length is not trivial, consult the internet for this one. 
 
 <ins>MS Windows</ins>
 
 * The default is 260 characters
 * According Microsoft "The maximum path of 32,767 characters is approximate (sic)"
-* See section **Setting Windows directory path length** to determine current path length setting and change it.
+* See next section to determine current path length and change it.
 
 **Setting Windows directory path length**
 
@@ -177,7 +177,7 @@ In Powershell (as administrator) run the _Get-ItemProperty_ command to determine
 ~~~
 PS C:\> Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled"
 
-LongPathsEnabled : 0    <----- if zero, it is not enabled 
+LongPathsEnabled : 0    <-----------------------  0 = not enabled otherwise its 1 = it is currently enabled 
 PSPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
 PSParentPath     : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control
 PSChildName      : FileSystem
