@@ -1,0 +1,167 @@
+#!/usr/bin/bash
+#set -x
+function Usage(){
+cat << msg_end
+
+syncBKUP - Synchronised data backups with unlimited delta versioning.
+
+SyncBKUP, a Bash script to that synchronises data directories and files to a backup repository. Only the most recent backup is stored in the repository. All changes and deletion to any directory or file between backups are kept in individual version directories. There are no limits on how long or how much historical data is kept, its user managed.  This script is based on capabilities of RSYNC.
+
+USAGE
+syncBKUP -s <source> -d <destination> -m <no-mount-check>
+
+OPTIONS
+  -s The source data of the backup, the source must be a directory or the name of a file that contains directories to be backed up.
+  -d The destination directory of the backup data, the backup repository. The repository contains the backed up data, logs and the delta versions.
+  -m Optional, this disables the mount point check for the backup target storage, it must be accompanied by "no-mount-check".
+
+INPUT NOTES AND RESTRICTIONS FOR ALL BACKUPS
+  -  Only full directory paths are permitted.
+  -  All symbolic links are ignored and will not be processed.
+  -  Directory input with spaces requires single quotes
+  -  Trailing slashes on directory names are ignored.
+  -  Individual files cannot be used as a source.
+
+SOURCE FILE FORMAT -  A source file that provides a list of directories to back up.
+The format requirements of the source file are:
+  - Any line that starts with *'#'* is ignored.
+  - Any line where the first character is *'.'* (full stop) will terminate all backup processing.
+  - Blanks lines and leading spaces on lines are permitted.
+  - Only lines that contain a single valid non-empty directory will be processed, any additional material on a line will cause the line not to be processed.
+
+MOUNT POINT CHECK - A safety check to prevent filesystems filling up.
+
+Traditionally /mnt is where temporary external devices and network shares are attached. Prior to mounting a device to a mount point, its diorectory must exist. Anything that copies data to a mount point directory without an attached device will run as normal and could fill up the filesystem. When the mount point has an attached storage device, any data that was previously written to it remains and it is hidden and using up storage capacity.
+
+ - The scope of mount point check is the first three directories of the destination path.
+ - Symbolic links to mount points if used may pass the mount point check if ther is an attached storage device. With symbolic links there are no guarantees, it pays to manually verify what is mounted.  Manual verification is always best, run the df -Th command.
+
+Special case: In a MSYS2 environment the mount point check is disabled.
+
+DISABLING Mount Point Check : The option -m must be accompanied with "no-mount-check"
+
+MORE IMFORMATION - See GitHub syncBKUP  
+
+Author: Jim JMcDonald
+msg_end
+} #--------------------------------------------------------
+function Source_line_cleanup(){ 
+   local line="$1"
+   line="${line#\'}"              # remove leading single quote
+   line="${line#\"}"              # remove leading double quote
+   line="${line%\'*}"             # remove trailing single quote 
+   line="${line%\"*}"             # remove trailing double quote 
+   echo "$line" | sed 's/\/\+$//' # remove trailing '/'
+} #--------------------------------------------------------
+function dir_name_make (){
+   local in_dir=$(sed 's/ /./g' <<< "$1") 
+   parent_level=50
+
+   dir="$(realpath "$in_dir")"
+   local parents_tmp=()
+   parents=()
+   for ((i=0; i<$parent_level; i++)); do
+      dir_n="$(basename "$dir")"
+      if [[ "$dir_n" == "/" ]]; then
+        break
+      fi
+      parents_tmp+=("$dir_n")
+      dir=$(dirname "$dir")
+   done
+   for (( i=${#parents_tmp[@]}-1; i>=0; i-- )); do
+      parents+=("${parents_tmp[i]}")
+   done
+   dir_name="$(echo "${parents[@]}"  | sed 's/ /_/g')"
+   dir_name=$(sed 's/\./ /g' <<< "$dir_name") 
+   echo "$dir_name"
+} #--------------------------------------------------------
+function start_log(){
+   log_line="============================================="
+   printf "%s\n   %s\n%s\n" "$log_line" "$1" "$log_line"  
+} #--------------------------------------------------------
+function Do_bkup(){     
+   local source_dir=$1
+   local destination_dir=$2 
+   now=$(date +%Y-%b-%d-%H%M-%S)
+   out_dir=$(dir_name_make "$source_dir")
+   bkup_target="${destination_dir}/$(uname -n)/${out_dir}"
+   if [ ! -d "$bkup_target" ] ; then 
+     mkdir -p "$bkup_target"
+   fi
+   log="${bkup_target}/log"
+   start_log "$now" >> "$log"
+   ver_dir="${bkup_target}/$(basename "$source_dir")-version-${now}"
+   echo "ver_dir >${ver_dir}<"
+   mkdir "$ver_dir"
+   rsync -aAXhv --backup --backup-dir="$ver_dir" --no-links --delete --log-file="$log" "$source_dir"  "$bkup_target" 
+   if [ "$(ls -A "$ver_dir")" ]; then
+       echo | tee -a >> "$log"
+       echo "Old dirs & files saved in ${ver_dir}" | tee -a "$log"  
+       find "$ver_dir" -type f -print | tee -a "$log"
+   else
+       rmdir "$ver_dir"
+      echo "No files updated - Version directory is Empty, it has been removed:" | tee -a "$log"
+      echo " $ver_dir " | tee -a "$log"
+   fi
+}
+#---------------------------------
+
+##### Main ###########################################
+if [ "$#" -eq "0" ] ; then 
+   Usage
+   exit 1
+fi    
+mount_chk="Y"
+while getopts ":s:d:m:" opt; do
+  case $opt in
+    s) bkup_source=${OPTARG} ;;
+    d) bkup_destination=${OPTARG} ;;
+    m) mount_chk=${OPTARG} ;;
+    :) echo -e "An option requires an argument."; Usage  ; exit 1 ;;
+    *) echo "Given option that is not permitted"; Usage  ; exit 1;;
+ esac
+done
+
+if $(uname | grep -q MSYS); then # there is no mountpoint command in MSYS2
+   mount_chk="no-mount-check"    # mountpoint is required for mount point check	
+fi                             
+if [ "$mount_chk" == "Y" ] || [ "$mount_chk" != "no-mount-check" ]; then
+   mnt_pt1=$(echo $bkup_destination | awk -F'/' '{printf "/%s",$2}')
+   mnt_pt2=$(echo $bkup_destination | awk -F'/' '{printf "/%s/%s",$2,$3}')
+   mnt_pt3=$(echo $bkup_destination | awk -F'/' '{printf "/%s/%s/%s",$2,$3,$4}')
+   if $(mountpoint -q $mnt_pt1) || $(mountpoint -q $mnt_pt2) || $(mountpoint -q $mnt_pt3) ; then
+      echo "Backup destination mounted : $bkup_destination"
+   else   
+      echo "Backup destination not mounted : $bkup_destination"
+      exit
+   fi
+fi
+
+if [ -d "$bkup_source" ] && [ -n "$(ls -A "$bkup_source")" ] ; then
+   # source is a non-empty dir
+
+    source_dir=$(Source_line_cleanup "$bkup_source")
+   #source_dir=$(echo "$bkup_source" | sed 's/\/\+$//') # remove trailing '/'
+   Do_bkup "$source_dir"  $bkup_destination   
+elif [  -f "$bkup_source" ] ; then # its a file of sources 
+   grep -v '^#' "$bkup_source" | while read -r source_tmp ; do
+      if [[ "$source_tmp" == .* ]]; then
+         echo "EXITING ON A TERMINATING LINE : $source_tmp "
+         exit
+      else
+         source_line=$(Source_line_cleanup "$source_tmp")
+      fi
+      source_dir=$(echo "$source_line" | sed 's/\/\+$//') # remove trailing '/'
+      if [ -d "${source_line}" ] && [ "$(ls -A "$source_line")" ]; then
+           echo; echo "PROCESSING ----------- ${source_dir}"
+           Do_bkup "$source_dir" "$bkup_destination"
+      elif [ "$source_line" != "" ] ; then
+	  echo    
+          echo "DIRECTORY IS EMPTY OR DOES NOT EXIST: $source_dir"
+      fi
+   done    
+else
+  echo "FAIL: -s option requires either a valid non-empty directory or a file contining one or more source directories"	
+fi  
+#---------------------------------
+
