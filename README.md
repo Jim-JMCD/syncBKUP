@@ -9,20 +9,20 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 ~~~
 #### Options
 
-**-s** The source data of the backup, it must be directory or the name of a file that contains direcotries to be backed up. 
+**-s** The source data of the backup, the source must be a directory or the name of a file that contains direcotries to be backed up. 
 
 **-d** The destination directory of the backup data, the backup repository. That contains the backed up data, logs and the delta versions.
 
 **-m** An optional mount point check for backup target storage. When used it must be accompanied by "**no-mount-check**".   
 
 **Input notes and restrictions**
-* All directory paths must be <ins>full paths</ins>.
+* Only <ins>full directory paths</ins> are permitted. 
 * <ins>All symbolic links</ins> are ignored and will not be processed.
 * Directory input with spaces requires single quotes **'/mnt/c/Users/ted/My Stuff'**
 * Trailing slashes on directory names are ignored.
 * Individual files cannot be used as a source.    
 
-**Source File Format** A source file provides a list of directories to back up. 
+**Source File Format** A source file that provides a list of directories to back up. 
 
 The format requirements of the source file are: 
 * Any line that starts with *'#'* is ignored.
