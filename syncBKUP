@@ -40,7 +40,8 @@ Special case: In a MSYS2 environment the mount point check is disabled.
 
 DISABLING Mount Point Check : The option -m must be accompanied with "no-mount-check"
 
-MORE IMFORMATION - See GitHub syncBKUP  
+MORE IMFORMATION
+See GitHub syncBKUP  https://github.com/Jim-JMCD/syncBKUP/
 
 Author: Jim JMcDonald
 msg_end
