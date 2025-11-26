@@ -26,16 +26,16 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 
 The format requirements of the source file are: 
 * Any line that starts with *'#'* is ignored.
-* Any line where the first character is *'.'* (full stop) will terminate all backup processing. Any directories listed after that line will not be processed.
+* Any line where the first character is *'.'* (full stop) will terminate all backup processing.
 * Blanks lines and leading spaces on lines are permitted.
-* Only lines that only contain a single valid non-empty directory will be processed, <ins>any additional material on a line will cause the line not to be processed</ins>. 
+* Only lines that contain a single valid non-empty directory will be processed, <ins>any additional material on a line will cause the line not to be processed</ins>. 
    
 **Mount Point Check** A safety check to prevent the potential of the root and other filesystems filling up.
 
-Traditionally */mnt* is where temporary external devices and network shares are attached, with each device having its own directory.  To attach (aka mount) a device a pre-existing directory (aka mount point) must exist. Anything that copies data to the mount point without an attached device will run as normal and <ins>could fill up the filesystem</ins>. When the mount point has an attached storage device, the directories and files that were previously written to it remain hidden and are using up space. 
+Traditionally */mnt* is where temporary external devices and network shares are attached. Prior to  attaching  (aka mounting) a device a directory (aka mount point) must exist. Anything that copies data to that mount point direcotry without an attached device will run as normal and <ins>could fill up the filesystem</ins>. When the mount point has an attached storage device, any data that was previously written to it remains and it is hidden and using up storage capacity.
 
 * The scope of mount point check is the first three directories of the destination path, example **-d /mnt/USB/SG2TB/bkups/2025** the directories **/mnt**, **/mnt/USB** and **/mnt/USB/SG2TB** will be checked. The mount point check will fail if none of those directories contain a mounted device and backups will not proceed.
-* Symbolic links to mount points are often used to create a convenient reference to storage devices. If the symbolic link is straight forward, it will pass the mount point check if it has an attached  storage device. With symbolic links there are no guarantees, it pays to manually verify, use the 
+* Symbolic links to mount points are often used to create a convenient reference to storage devices. If the symbolic link is straight forward, it will pass the mount point check if it has an attached storage device. With symbolic links there are no guarantees, it pays to manually verify what is mounted.
 * Manual verification is always best, run the **df -Th** command.
 * Special case: In a MSYS2 environment the mount point check is disabled.
    
@@ -43,19 +43,22 @@ _Disabling Mount Point Check_ : The option **-m** must be accompanied with _no-m
 
 ### Backup Destination 
 
-Directory structure of the backup repository, the levels are:
-* Level 1 - Top level - an existing directory given to syncBKUP as **-d \<destination\>**
-* Level 2 - The computer name where the script was run. This permits multiple computers tp write to the same storage area.
+Directory structure of the backup repository:
+ 
+* Level 1 - The directory given to syncBKUP as thre backup destination **-d \<destination\>**.  
+* Level 2 - The computer name where the script was run, this identifies the source computer.
 * Level 3 - A directory name derived from the source date directory provided by **-s \<source\>**, it only contains the Level 4 directory.  
 * Level 4 - The directory level named after the parent of the data. Example if the source directory is **-s /home/ada/music** the name of this level will be **music**. This level contains: 
    * The synced backup data.
    * The log file
-   * The versions diretories. They contain all the deletions and modifications between each back.    
+   * The versions diretories. They contain all the deletions and modifications between each back.   
 
+ The top level (Level 1) has to be a pre-existing directory. SyncBKUP will automatically create directories for Levels 2 to 4 when required. 
+ 
 <ins>How to identify and locate what is backed up</ins> 
 
 * Level 2 - Computer name of data source  
-* Level 3 - Directory path of the source given to syncBKUP. The directory name of Level 3 uniquely identifies each source directory  "/" slashes of the source directory path are replaced with underscores "_", spaces in directory names are preserved.
+* Level 3 - Directory name is a modified form of the directory path of the source given to syncBKUP. The "/" slashes of the source directory path are replaced with underscores "_", spaces in directory names are preserved.
 
 _Examples_
 <!All backups can be located in **../Computer name/Modified_source_directory_name/..* -->
@@ -64,7 +67,7 @@ Computer name = star03
 Data source   = -s /home/ada/music/2010s/dubstep
 Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
 
-Location of synchronised backup:
+Location of the backup on the computer that is running syncBKUP:
 /mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada_music_2010s_dubstep/dubstep/
 ~~~
 * Backups identifiers : **../star03/home_ada_music_2010s_dubstep/..**
@@ -75,7 +78,7 @@ Computer name = fred02
 Data source   = -s '/mnt/c/Users/ted/Music/1990 - 97/Shoegaze and Nu Metal'
 Destination   = -d /mnt/e/syncBKUP/
 
-Location of synchronised backup :
+Location of the backup on the computer that is running syncBKUP:
 '/mnt/e/syncBKUP/fred02/mnt_c_Users_ted_Music_1900 - 97_Shoegaze & Nu Metal/Shoegaze & Nu Metal'
 ~~~
 * Backups identifiers : **../fred02/mnt_c_Users_ted_Music_1900 - 97_Shoegaze & Nu Metal/..**
