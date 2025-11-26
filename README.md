@@ -1,7 +1,7 @@
 # UNDER CONTRUCTION 
 ## syncBKUP - Synchronised data backups with unlimited delta versioning. 
 
-#### _SyncBKUP_, a Bash script to that synchronises data directories and files to a backup repository. Only the last backup is stored in the repository. All changes and deletion to any directory or file between backups are kept in individual version folders. A history of data synchronisations are retained in individual version directories. There are no limits on how long or how much historical data is kept.  This script is based on capabilities of ***rsync***.
+#### _SyncBKUP_, a Bash script to that synchronises data directories and files to a backup repository. Only the most recent backup is stored in the repository. All changes and deletion to any directory or file between backups are kept in individual version directories. There are no limits on how long or how much historical data is kept, its user managed.  This script is based on capabilities of ***rsync***.
 
 ### Usage
 ~~~
@@ -11,11 +11,11 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 
 **-s** The source data of the backup, the source must be a directory or the name of a file that contains direcotries to be backed up. 
 
-**-d** The destination directory of the backup data, the backup repository. That contains the backed up data, logs and the delta versions.
+**-d** The destination directory of the backup data, the backup repository. The repository contains the backed up data, logs and the delta versions.
 
-**-m** An optional mount point check for backup target storage. When used it must be accompanied by "**no-mount-check**".   
+**-m** An option that disables the mount point check for the backup target storage. When used it must be accompanied by "**no-mount-check**".   
 
-**Input notes and restrictions**
+**Input notes and restrictions** for all backups
 * Only <ins>full directory paths</ins> are permitted. 
 * <ins>All symbolic links</ins> are ignored and will not be processed.
 * Directory input with spaces requires single quotes **'/mnt/c/Users/ted/My Stuff'**
@@ -26,7 +26,7 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 
 The format requirements of the source file are: 
 * Any line that starts with *'#'* is ignored.
-* Any line that starts with *'.'* (full stop) terminates all backup processing. Any directories listed after that line will not be processed.
+* Any line where the first character is *'.'* (full stop) will terminate all backup processing. Any directories listed after that line will not be processed.
 * Blanks lines and leading spaces on lines are permitted.
 * Only lines that only contain a single valid non-empty directory will be processed, <ins>any additional material on a line will cause the line not to be processed</ins>. 
    
