@@ -48,13 +48,19 @@ _Disabling Mount Point Check_ : The option -m must be accompanied with _no-mount
 Directory structure of the backup repository, the levels are:
 * Level 1 - Top level - an existing directory given to syncBKUP as **-d \<destination\>**
 * Level 2 - The computer name where the script was run. This permits multiple computers tp write to the same storage area.
-* Level 3 - The directory that contains and uniquely each directory that is backed up i.e. given to syncBKUP as **-s <source>**. This directory contains the version directories and the log for each backup.  
-* Level 4 - The directory level named after the parent of the data. Example this directory will be named **music** when given **-s /home/ada/music** to backup. All directories below this level contain the backup data.
+* Level 3 - A directory name derived from the source date directory provided by **-s \<source\>**, it only contains the Level 4 directory.  
+* Level 4 - The directory level named after the parent of the data. Example this directory will be named **music** when **/home/ada/music** is the source directory [-s /home/ada/music]. This directory contains
+   * The synced backup data.
+   * The log file
+   * The versions diretories. They contain all the deletions and modifications between each back.    
 
-#### Identifying what is backed up 
-Level 3, the directory name uniquely identifies each directory backed up by created a direcotry named using the directory path of of the source.  The "/" slashes of the source directory path are replaced with underscores "_", spaces in directory names are preserved.
+<ins>How to identify and locate what is backed up</ins> 
 
-All backups can be located in **../Computer name/Modified_source_directory_name/..* 
+* Level 2 - Computer name of data source  
+* Level 3 - Directory path of the source given to syncBKUP. The directory name of Level 3 uniquely identifies each source directory  "/" slashes of the source directory path are replaced with underscores "_", spaces in directory names are preserved.
+
+_Examples_
+<!All backups can be located in **../Computer name/Modified_source_directory_name/..* -->
 ~~~
 Computer name = star03
 Data source   = -s /home/ada/music/2010s/dubstep
@@ -63,25 +69,33 @@ Destination   = -d /mnt/USB/BKUP_2TB/syncBKUP/2025
 Location of synchronised backup:
 /mnt/USB/BKUP_2TB/syncBKUP/2025/star03/home_ada_music_2010s_dubstep/dubstep/
 ~~~
+* Backups identifiers : **../star03/home_ada_music_2010s_dubstep/..**
 * Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../dubstep/**
 * Version directories are located in the same as the logs and **.../dubstep/**
 ~~~
 Computer name = fred02
-Data source   = -s '/mnt/c/Users/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
+Data source   = -s '/mnt/c/Users/ted/Music/1990 - 97/Shoegaze and Nu Metal'
 Destination   = -d /mnt/e/syncBKUP/
 
 Location of synchronised backup :
-'/mnt/e/syncBKUP/fred02/mnt_c_Users_ted_Music_900 to 1997_Shoegaze and Nu Metal/Shoegaze and Nu Metal'
+'/mnt/e/syncBKUP/fred02/mnt_c_Users_ted_Music_1900 - 97_Shoegaze & Nu Metal/Shoegaze & Nu Metal'
 ~~~
-* Logs for /home/ada/music/2010s/dubstep backup are located in the same directory as **.../Shoegaze and Nu Metal/*
-* Version directories are located in the same as the logs and **.../Shoegaze and Nu Metal/**
-* Note: Directories names with spaces have the spaces converted to underscores. 
-~~~
-'/ted/Music/1990 to 1997/Shoegaze and Nu Metal'
-Is converted to
-ted_Music_1990_to_1997_Shoegaze_and_Nu_Metal
-~~~
-Maximum characters permitted in a directory path obtained from the command **_getconf PATH_MAX /_** (usually 4096 characters).
+* Backups identifiers : **../fred02/mnt_c_Users_ted_Music_1900 - 97_Shoegaze & Nu Metal/..**
+* Logs for '/mnt/c/Users/ted/Music/1990 - 97/Shoegaze and Nu Metal' backup are located in the same directory as **.../Shoegaze and Nu Metal/**
+* Version directories are located in the same the logs and backup.
+
+**Limitiations**
+
+<ins>Linux directory path length</ins>
+
+* Maximum characters permitted in a directory path obtained from the command **_getconf PATH_MAX /_** (usually 4096 characters).
+* Changing the Length directory path length is not trivial, consult the internet for this one. 
+
+<ins>Windows directory path length</ins>
+
+* The defualt is 260 characters
+* According Microsoft "The maximum path of 32,767 characters is approximate (sic)"
+* See section **Setting Windows directory path length** to determine current path length setting and change it.
 
 ### Versions
 For each directory backup, all deletions and modifications of files and directories will be recorded individual version directories.
@@ -119,7 +133,8 @@ syncBKUP -s <source> -d <destination> > log_file
 OR
 syncBKUP -s <source> -d <destination> | tee log_file
 ~~~
-### rsync options used
+**rsync options used**
+
    * **-a** Archive mode
    * **-A** Preserve ACLs
    * **-X** Preserve extended attributes
@@ -132,6 +147,47 @@ syncBKUP -s <source> -d <destination> | tee log_file
 
 Compression not used because it only of benefits IP network synchronisations. If compression is enabled for non-networked transfers synchronisations have to do a lot of unnecessary processing of compression. 
 Rsync will not compress files that are already compressed (most multimedia) and small files.  
+
+### Limitiations
+
+<ins>Linux directory path length</ins>
+
+* Maximum characters permitted in a directory path obtained from the command **_getconf PATH_MAX /_** (usually 4096 characters).
+* Changing the Length directory path length is not trivial, consult the internet for this one. 
+
+<ins>Windows directory path length</ins>
+
+* The defualt is 260 characters
+* According Microsoft "The maximum path of 32,767 characters is approximate (sic)"
+* See section **Setting Windows directory path length** to determine current path length setting and change it.
+
+**Setting Windows directory path length**
+
+In Powershell (as administrator) run the _Get-ItemProperty_ command to determine if the maximum is enabled.  
+~~~
+PS C:\> Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled"
+
+LongPathsEnabled : 0    <----- if zero, it is not enabled 
+PSPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
+PSParentPath     : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control
+PSChildName      : FileSystem
+PSDrive          : HKLM
+PSProvider       : Microsoft.PowerShell.Core\Registry
+~~~
+Use the _New-ItemProperty_ command to set it. Once done, restart the computer for the change to take effect.   
+~~~
+PS C:\> New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+
+LongPathsEnabled : 1
+PSPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
+PSParentPath     : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control
+PSChildName      : FileSystem
+PSDrive          : HKLM
+PSProvider       : Microsoft.PowerShell.Core\Registry
+PS C:\>
+~~~
+
+
      
      
 
