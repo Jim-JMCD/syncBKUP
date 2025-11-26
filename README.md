@@ -141,7 +141,7 @@ Running of syncBKUP on Microsoft WSL2 Linux and MSYS2 has different use cases.
 Microsoft recommends that you do not run WSL2 on computers that run virtual hypervisors like VirtualBox, apparently there are conflicts between WSL2 and other virtual hypervisors. With computers that have VirtualBox or the like installed the safest option is to install MSYS2 to run syncBKUP.   
 
 * **GitBash** is another Linux-like environment based on Cygwin, syncBKUP cannot be used on gitBash because rsync cannot be easily installed.
-* **Cygwin**.  Cygwin is a more comprehensive environment than MSYS2, synBKUP has not been tested in a Cygwin environment, it should work as advertised because the rsync installation package for MSYS2 came directly from Cygwin, it sill had the original name on the box.    
+* **Cygwin**.  Cygwin is a more comprehensive environment than MSYS2, syncBKUP has not been tested in a Cygwin environment, it should work as advertised because the rsync installation package for MSYS2 came directly from Cygwin, it sill had the original name on the box.    
 
 **RSYNC Options used**
 
