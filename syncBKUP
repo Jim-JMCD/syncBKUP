@@ -55,9 +55,8 @@ function Source_line_cleanup(){
    echo "$line" | sed 's/\/\+$//' # remove trailing '/'
 } #--------------------------------------------------------
 function dir_name_make (){
-   local in_dir=$(sed 's/ /./g' <<< "$1") 
+   local in_dir=$(sed 's/ /:/g' <<< "$1") 
    parent_level=50
-
    dir="$(realpath "$in_dir")"
    local parents_tmp=()
    parents=()
@@ -73,7 +72,7 @@ function dir_name_make (){
       parents+=("${parents_tmp[i]}")
    done
    dir_name="$(echo "${parents[@]}"  | sed 's/ /_/g')"
-   dir_name=$(sed 's/\./ /g' <<< "$dir_name") 
+   dir_name=$(sed 's/:/ /g' <<< "$dir_name") 
    echo "$dir_name"
 } #--------------------------------------------------------
 function start_log(){
