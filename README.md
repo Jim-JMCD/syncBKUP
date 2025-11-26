@@ -1,5 +1,5 @@
 # UNDER CONTRUCTION 
-## syncBKUP - Synchronised data backups with unlimited versioning. 
+## syncBKUP - Synchronised data backups with unlimited delta versioning. 
 
 #### _SyncBKUP_, a Bash script to that synchronises data directories and files to a backup repository. Only the last backup is stored in the repository. All changes and deletion to any directory or file between backups are kept in individual version folders. A history of data synchronisations are retained in individual version directories. There are no limits on how long or how much historical data is kept.  This script is based on capabilities of ***rsync***.
 
@@ -9,39 +9,37 @@ syncBKUP -s <source> -d <destination> -m <no-mount-check>
 ~~~
 #### Options
 
-**-s** A directory or file name required as a data source of the backup. 
+**-s** The source data of the backup, it must be directory or the name of a file that contains direcotries to be backed up. 
 
-**-d** The destination directory of the backup data, the backup repository.
+**-d** The destination directory of the backup data, the backup repository. That contains the backed up data, logs and the delta versions.
 
-**-m** Optional, when used it must be accompanied by "**no-mount-check**".   
+**-m** An optional mount point check for backup target storage. When used it must be accompanied by "**no-mount-check**".   
 
 **Input notes and restrictions**
 * All directory paths must be <ins>full paths</ins>.
 * <ins>All symbolic links</ins> are ignored and will not be processed.
-* Single directory input with spaces requires single quotes **'/mnt/c/Users/ted/My Documents'**
-* Trailing slashes on directory names are ignored, example: **/home/ada/** will be processed as **/home/ada**
-* Only directories will be synchronised, individual files cannot be used as a source.    
+* Directory input with spaces requires single quotes **'/mnt/c/Users/ted/My Stuff'**
+* Trailing slashes on directory names are ignored.
+* Individual files cannot be used as a source.    
 
-**Source File Format**
+**Source File Format** A source file provides a list of directories to back up. 
 
-A source file provides a list of directories to back up. The format requirements are 
+The format requirements of the source file are: 
 * Any line that starts with *'#'* is ignored.
 * Any line that starts with *'.'* (full stop) terminates all backup processing. Any directories listed after that line will not be processed.
-* Blanks lines are permitted.
-* Leading spaces on line entries permitted.
+* Blanks lines and leading spaces on lines are permitted.
 * Only lines that only contain a single valid non-empty directory will be processed, <ins>any additional material on a line will cause the line not to be processed</ins>. 
    
-**Mount Point Check**
-  
-A safety check to prevent the potential of the root and other filesystems filling up. It also pays to check using **df -Th** command
+**Mount Point Check** A safety check to prevent the potential of the root and other filesystems filling up.
 
-Traditionally */mnt* is where temporary external devices and network shares are attached, with each device having its own directory.  To attach (aka __mount__) a device a pre-existing directory (aka __mount point__) must exist it usually has flexible write permissions. Any utilitiy that copies data to the mount point without a device attached will run as normal and <ins>could fill up the root filesystem</ins> or what ever filesystem the mount point is on. When the mount point is used by an external device, the directories and files that were previously written to it remain hidden and using up space. 
+Traditionally */mnt* is where temporary external devices and network shares are attached, with each device having its own directory.  To attach (aka mount) a device a pre-existing directory (aka mount point) must exist. Anything that copies data to the mount point without an attached device will run as normal and <ins>could fill up the filesystem</ins>. When the mount point has an attached storage device, the directories and files that were previously written to it remain hidden and are using up space. 
 
-* The mount point check covers the first three directories of a backup destination path, example **/mnt/USB/BKUP_2TB/syncBKUP/2025** the directories **/mnt**, **/mnt/USB** and **/mnt/USB/BKUP_2TB** will be checked. If none of those directories contain a mounted device the check will fail and processing will not proceed.
-* Symbolic links to mount points are often used to create a convenient refence to storage devices. If the symbolic link is straight forward, it will pass the mount point check if a storage device is attached to the mount point that it references. With symbolic links there are no guarantees, it pays to check.
+* The scope of mount point check is the first three directories of the destination path, example **-d /mnt/USB/SG2TB/bkups/2025** the directories **/mnt**, **/mnt/USB** and **/mnt/USB/SG2TB** will be checked. The mount point check will fail if none of those directories contain a mounted device and backups will not proceed.
+* Symbolic links to mount points are often used to create a convenient reference to storage devices. If the symbolic link is straight forward, it will pass the mount point check if it has an attached  storage device. With symbolic links there are no guarantees, it pays to manually verify, use the 
+* Manual verification is always best, run the **df -Th** command.
 * Special case: In a MSYS2 environment the mount point check is disabled.
    
-_Disabling Mount Point Check_ : The option -m must be accompanied with _no-mount-check_ : **-m no_mount_check**
+_Disabling Mount Point Check_ : The option **-m** must be accompanied with _no-mount-check_ : **-m no_mount_check**
 
 ### Backup Destination 
 
@@ -49,7 +47,7 @@ Directory structure of the backup repository, the levels are:
 * Level 1 - Top level - an existing directory given to syncBKUP as **-d \<destination\>**
 * Level 2 - The computer name where the script was run. This permits multiple computers tp write to the same storage area.
 * Level 3 - A directory name derived from the source date directory provided by **-s \<source\>**, it only contains the Level 4 directory.  
-* Level 4 - The directory level named after the parent of the data. Example this directory will be named **music** when **/home/ada/music** is the source directory [-s /home/ada/music]. This directory contains
+* Level 4 - The directory level named after the parent of the data. Example if the source directory is **-s /home/ada/music** the name of this level will be **music**. This level contains: 
    * The synced backup data.
    * The log file
    * The versions diretories. They contain all the deletions and modifications between each back.    
@@ -83,19 +81,6 @@ Location of synchronised backup :
 * Backups identifiers : **../fred02/mnt_c_Users_ted_Music_1900 - 97_Shoegaze & Nu Metal/..**
 * Logs for '/mnt/c/Users/ted/Music/1990 - 97/Shoegaze and Nu Metal' backup are located in the same directory as **.../Shoegaze and Nu Metal/**
 * Version directories are located in the same the logs and backup.
-
-**Limitiations**
-
-<ins>Linux directory path length</ins>
-
-* Maximum characters permitted in a directory path obtained from the command **_getconf PATH_MAX /_** (usually 4096 characters).
-* Changing the Length directory path length is not trivial, consult the internet for this one. 
-
-<ins>Windows directory path length</ins>
-
-* The defualt is 260 characters
-* According Microsoft "The maximum path of 32,767 characters is approximate (sic)"
-* See section **Setting Windows directory path length** to determine current path length setting and change it.
 
 ### Versions
 For each directory backup, all deletions and modifications of files and directories will be recorded individual version directories.
@@ -148,14 +133,14 @@ syncBKUP -s <source> -d <destination> | tee log_file
 Compression not used because it only of benefits IP network synchronisations. If compression is enabled for non-networked transfers synchronisations have to do a lot of unnecessary processing of compression. 
 Rsync will not compress files that are already compressed (most multimedia) and small files.  
 
-### Limitiations
+****Limitiations**** direcotrey path length 
 
-<ins>Linux directory path length</ins>
+<ins>Linux</ins>
 
 * Maximum characters permitted in a directory path obtained from the command **_getconf PATH_MAX /_** (usually 4096 characters).
 * Changing the Length directory path length is not trivial, consult the internet for this one. 
 
-<ins>Windows directory path length</ins>
+<ins>MS Windows</ins>
 
 * The defualt is 260 characters
 * According Microsoft "The maximum path of 32,767 characters is approximate (sic)"
