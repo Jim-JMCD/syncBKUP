@@ -111,11 +111,11 @@ Directories created by syncBKUP for the backup of star03:/home/ada/
 .../star03/home_ada
               |__ /ada        <------------------------- Contains the most recent synchronised full backup of /home/ada 
               |__ /ada-version-2025-Nov-23-1902-16       
-              |__ /ada-version-2025-Nov-09-1900-10       Version directories containing all the modificatons and deketions  
-              |__ /ada-version-2025-Nov-02-1901-36       from each backup run (every Sunday at about 7PM)
+              |__ /ada-version-2025-Nov-09-1900-10       Version directories containing all the modificatons and deletions  
+              |__ /ada-version-2025-Nov-02-1901-36       from each backup run (every Sunday at about 7PM).
               |__ /ada-version-2025-Oct-26-1900-05
-              |__ /log        <------------------------  The log file for every /home/ada backup, all backup log data
-                                                         is appended to this file
+              |__ /log        <------------------------  The log file for every /home/ada backup.
+                                                         All log data is appended to this file.
 ~~~
 
 ### Logs
@@ -178,7 +178,7 @@ In Powershell (as administrator) run the _Get-ItemProperty_ command to determine
 ~~~
 PS C:\> Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled"
 
-LongPathsEnabled : 0    <-----------------------  0 = not enabled otherwise its 1 = it is currently enabled 
+LongPathsEnabled : 0    <-----------------------  0 = not enabled otherwise its 1 = enabled 
 PSPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
 PSParentPath     : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control
 PSChildName      : FileSystem
