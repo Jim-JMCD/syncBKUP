@@ -153,15 +153,15 @@ Microsoft recommends that you do not run WSL2 on computers that run virtual hype
 | -X               | Preserve extended attributes. |
 | -h               | Human readable, for the logs. |
 | -v               | Verbosity. Set to lowest verbosity used in individual logs. |
-| --backup         | Backup all files and directories before they were changed.  |
-| --backup-dir     | The directory for the backups from previous option. |
+| --backup         | Backup all files and directories before they were changed, deleted or renamed.  |
+| --backup-dir     | The directory for the backups of the previous option. |
 | --no-links       | Do not follow or use symbolic links. |
 | --delete         | At synchronisation, anything deleted on source is mirrored in the repository. Deleted files and directories saved in the version directories. |
 | --log-file       |This appends the output created by rsync and the -v option to a designated log file. |
 
+Compression not used because it only of benefits IP network synchronisations. Rsync will not compress files that are already compressed (most multimedia) and small files.
 
-Compression not used because it only of benefits IP network synchronisations. 
-Rsync will not compress files that are already compressed (most multimedia) and small files.  
+Following symbolic links can lead you into strange places, like the Windows Documents folder which has hidden system links to the Videos, Pictures and Music folders. Following symbollic links can cause applications to enter into a circular path of links from which there is no escape. 
 
 ****Limitations**** - maximum Directory Path Length 
 
