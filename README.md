@@ -47,7 +47,7 @@ Using rsync:
 ~~~
 rsync -aAXhv <source> <destination> 
 ~~~
-* See **RSYNC- Options used** section below and the internet for more information.
+* See **RSYNC- Options used** section below and the internet for more information on which attributes are preserved in copying data.
 * Note: Trailing slashes at the end of the source path indicates that only the contents of the directory will be copied, omitting the slash means the entire directory, including its name, will be copied. 
 
 ### Backup Destination 
