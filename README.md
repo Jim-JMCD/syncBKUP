@@ -52,13 +52,14 @@ Note: Trailing slashes at the end of the source path indicates that only the con
 
 Directory structure of the backup repository:
  
-* Level 1 - The directory given to syncBKUP as thre backup destination **-d \<destination\>**.  
+* Level 1 - The directory given to syncBKUP as the backup destination **-d \<destination\>**.  
 * Level 2 - The computer name where the script was run, this identifies the source computer.
-* Level 3 - A directory name derived from the source date directory provided by **-s \<source\>**, it only contains the Level 4 directory.  
-* Level 4 - The directory level named after the parent of the data. Example if the source directory is **-s /home/ada/music** the name of this level will be **music**. This level contains: 
-   * The synced backup data.
-   * The log file
-   * The versions directories. They contain all the deletions and modifications between each back.   
+* Level 3 - A directory name derived from the source date directory (**-s \<source\>**), this level contains:
+   * The parent directory of the backup data (Level 4).
+   * The log file.
+   * The versions directories. They contain all the deletions and modifications between each backup.   
+* Level 4 - The directory level named after the parent of the data. Example if the source directory is **-s /home/ada/music** the name of this level will be **music**. This level contains the synced backup data.
+  
 
  The top level (Level 1) has to be a pre-existing directory. SyncBKUP will automatically create directories for Levels 2 to 4 when required. 
  
@@ -92,11 +93,12 @@ Location of the backup:
 * Logs and version directories are located in **.../Shoegaze and Nu Metal/**
 
 ### Version Directories 
-* For each directory backup, all file and directory deletions, modifications and renaming be recorded individual version directories.
-* If there are no changes to a directory between backups a version directory is not created.
+* For each directory backup, all file and directory deletions, modifications and renaming are recorded individual version directories.
+* If there are no changes in the source data between backups a version directory is not created.
 * When a file or directory is moved to the version directory its directory location within the original backup is also created. 
 * If a source directory is renamed the entire contents of original directroy will be copied to the version file.
-* All version directories have names that include the date and time of the backup that created them, format YYYY-MMM-DD-hhmm-ss.
+* All version directories have names that include the date and time of the backup that created them.
+* Date and time format is YYYY-MMM-DD-hhmm-ss.
 
 Example of version directories 
 ~~~
