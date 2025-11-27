@@ -136,9 +136,10 @@ Rsync was developed for use on *nix systems it was never intended for use on Win
 
 Running of syncBKUP on Microsoft WSL2 Linux and MSYS2 has different use cases. 
 * **WSL2** is a virtual environment based on Hyper-V that has ready access to the Windows host. SyncBKUP can backup the data from the Linux side of the fence and the Windows side to Windows attached storage. 
-* **MSYS2** is not a virtual environment it is based on the Unix-like Cygwin, it also provides easy access to Windows filesystem and attached devices  
+* **MSYS2** is not a virtual environment it is based on the Unix-like Cygwin, it also provides easy access to Windows filesystem and attached devices.
+* On Windows, WSL2 and MYSYS2 commands and scripts can be run from a Powershell terminal.    
 
-Microsoft recommends that you do not run WSL2 on computers that run virtual hypervisors like VirtualBox, apparently there are conflicts between WSL2 and other virtual hypervisors. With computers that have VirtualBox or the like installed the safest option is to install MSYS2 to run syncBKUP.   
+Microsoft recommends that you do not run WSL2 on computers that run virtual hypervisors like VirtualBox, apparently there are conflicts between WSL2 and other virtual hypervisors. With computers that have VirtualBox or the like installed the safest option is to install MSYS2 to run syncBKUP.  
 
 * **GitBash** is another Linux-like environment based on Cygwin, syncBKUP cannot be used on gitBash because rsync cannot be easily installed.
 * **Cygwin**.  Cygwin is a more comprehensive environment than MSYS2, syncBKUP has not been tested in a Cygwin environment, it should work as advertised because the rsync installation package for MSYS2 came directly from Cygwin, it sill had the original name on the box.    
