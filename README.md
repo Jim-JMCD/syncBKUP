@@ -43,7 +43,6 @@ _Disabling Mount Point Check_ : The option **-m** must be accompanied with _no-m
 ### Data Recovery
 The backup repository contains the most recent full backup in its unmodified native format, any file or directory copying utility can be used to recover data.  The same method can be be used to recover historical data from the version directories. See **RSYNC- Options used** section below and the internet for more information on which attributes are preserved in copying data.
 
-Using rsync:
 ~~~
 rsync -aAXhv <source> <destination> 
 ~~~
