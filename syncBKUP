@@ -91,7 +91,6 @@ function Do_bkup(){
    log="${bkup_target}/log"
    start_log "$now" >> "$log"
    ver_dir="${bkup_target}/$(basename "$source_dir")-version-${now}"
-   echo "ver_dir >${ver_dir}<"
    mkdir "$ver_dir"
    rsync -aAXhv --backup --backup-dir="$ver_dir" --no-links --delete --log-file="$log" "$source_dir"  "$bkup_target" 
    if [ "$(ls -A "$ver_dir")" ]; then
