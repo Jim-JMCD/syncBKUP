@@ -201,7 +201,10 @@ PSDrive          : HKLM
 PSProvider       : Microsoft.PowerShell.Core\Registry
 PS C:\>
 ~~~
+**Updates under construction**
 
+* Using SSH, create backup a backup repository remotely on another computer and rsync data to that repository.  
+* Improvments to logging.
 
      
      
