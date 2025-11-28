@@ -2,7 +2,7 @@
 
 #### _syncBKUP_, a Bash script to that synchronises data directories and files to a backup repository. Only the most recent backup is stored in the repository. All changes and deletion to any directory or file between backups are kept in individual version directories. There are no limits on how long or how much historical data is kept, its user managed.  This script is based on the capabilities of ***rsync***.
 
-**NOTE:** syncBKUP is best used with local attached storage, it is not recommended to use networked attached stoage belonging to another Linux computer. All backup data in the repository are individual files and directories that are mirrors of the source data, when copied to another computer there is the potential for file and directory ownership and attribute conflicts. To avoid these conflicts the backup in the repository needs to be bundled into a single file before being copied to another Linux computer.      
+**NOTE:** syncBKUP is best used with local attached storage, it is not recommended to use networked attached storage belonging to another Linux computer. The repository backups are individual files and directories that are mirrors of the source data, when copied to another computer there is the potential for file and directory ownership and attribute conflicts. To avoid these conflicts a backup in the repository needs to be bundled into a single file before being copied to another Linux computer.      
 
 ### Usage
 ~~~
