@@ -55,7 +55,10 @@ function Source_line_cleanup(){
    echo "$line" | sed 's/\/\+$//' # remove trailing '/'
 } #--------------------------------------------------------
 function dir_name_make (){
-   local in_dir=$(sed 's/ /:/g' <<< "$1") 
+# Replace / in path name with _
+# To preserve exiting spaces - temp covert them to some text and 
+# restore back to spaces when the "/" -> "_" conversion is complete  
+   local in_dir=$(sed 's/ /:temp_space_replacmentment_text:/g' <<< "$1") 
    parent_level=50
    dir="$(realpath "$in_dir")"
    local parents_tmp=()
@@ -72,7 +75,7 @@ function dir_name_make (){
       parents+=("${parents_tmp[i]}")
    done
    dir_name="$(echo "${parents[@]}"  | sed 's/ /_/g')"
-   dir_name=$(sed 's/:/ /g' <<< "$dir_name") 
+   dir_name=$(sed 's/:temp_space_replacmentment_text:/ /g' <<< "$dir_name") 
    echo "$dir_name"
 } #--------------------------------------------------------
 function start_log(){
